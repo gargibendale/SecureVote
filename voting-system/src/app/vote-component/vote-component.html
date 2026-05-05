@@ -1,0 +1,32 @@
+<!-- voting-page.component.html -->
+
+<!-- Step progress indicator at the top -->
+<div class="voting-progress">
+    <div class="progress-step" [class.active]="currentStep() === 'key-upload'"
+        [class.done]="currentStep() !== 'key-upload'">
+        <span class="ps-num">01</span><span class="ps-label">Key Upload</span>
+    </div>
+    <div class="progress-divider"></div>
+    <div class="progress-step" [class.active]="currentStep() === 'face-verify'" [class.done]="currentStep() === 'vote'"
+        [class.locked]="!keyResult">
+        <span class="ps-num">02</span><span class="ps-label">Face Verify</span>
+    </div>
+    <div class="progress-divider"></div>
+    <div class="progress-step" [class.active]="currentStep() === 'vote'" [class.locked]="currentStep() !== 'vote'">
+        <span class="ps-num">03</span><span class="ps-label">Cast Vote</span>
+    </div>
+</div>
+
+@if (election()) {
+@if (currentStep() === 'key-upload') {
+<app-key-upload (keyReady)="onKeyReady($event)" />
+}
+@if (currentStep() === 'face-verify') {
+<app-face-verify (faceVerified)="onFaceVerified()" />
+}
+@if (currentStep() === 'vote') {
+<app-cast-vote-page [election]="election()!" [keyResult]="keyResult!" />
+}
+} @else {
+<p>Loading election...</p>
+}

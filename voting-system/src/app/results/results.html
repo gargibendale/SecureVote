@@ -1,0 +1,138 @@
+<!-- results.component.html -->
+<div class="results-page">
+
+    <!-- ── Top Bar: Dropdown + Button ── -->
+    <div class="controls-bar">
+        <div class="control-group">
+            <label class="control-label" for="electionSelect">Election</label>
+            <div class="select-wrapper">
+                <select id="electionSelect" class="election-select" [(ngModel)]="selectedElectionId"
+                    [disabled]="isLoadingElections">
+                    <option [ngValue]="null" disabled>
+                        {{ isLoadingElections ? 'Loading elections...' : 'Select an election' }}
+                    </option>
+                    <option *ngFor="let election of elections" [ngValue]="election.election_id">
+                        {{ election.title }}
+                    </option>
+                </select>
+                <span class="select-chevron">&#x2335;</span>
+            </div>
+        </div>
+
+        <button class="btn-view" (click)="viewResults()" [disabled]="selectedElectionId === null || isLoadingResults">
+            <span *ngIf="!isLoadingResults">View Results</span>
+            <span *ngIf="isLoadingResults" class="spinner-text">
+                <span class="dot-spinner"></span> Loading...
+            </span>
+        </button>
+    </div>
+
+    <!-- ── Error Banner ── -->
+    <div *ngIf="errorMessage" class="error-banner">
+        &#x26A0; {{ errorMessage }}
+    </div>
+
+    <!-- ── Main Results Section (two columns) ── -->
+    <div class="results-grid" *ngIf="selectedElection && !isLoadingResults">
+
+        <!-- LEFT: Vote Breakdown Card -->
+        <div class="card breakdown-card">
+            <div class="card-header">
+                <h2 class="card-title">{{ selectedElection.title }}</h2>
+                <div class="card-meta">
+                    <span class="meta-pill">{{ totalVotes }} Total Votes</span>
+                    <span class="meta-pill">{{ selectedElection.candidates.length }} Candidates</span>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="totalVotes === 0" class="empty-votes">
+                <div class="empty-icon">&#x26AA;</div>
+                <p>No votes have been cast yet.</p>
+            </div>
+
+            <!-- Candidate Bars -->
+            <div class="candidates-list" *ngIf="totalVotes > 0">
+                <div class="candidate-row" *ngFor="let c of candidateResults; let i = index"
+                    [class.is-winner]="i === 0">
+                    <div class="candidate-info">
+                        <span class="candidate-name">{{ c.name }}</span>
+                        <span class="candidate-party">{{ c.party }}</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" [style.width.%]="c.percentage" [class.winner-bar]="i === 0"></div>
+                    </div>
+                    <div class="candidate-stats">
+                        <span class="vote-count">{{ c.votes }}</span>
+                        <span class="vote-pct">{{ c.percentage }}%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Winner Banner -->
+            <div class="winner-banner" *ngIf="winner">
+                <span class="winner-icon">&#x2714;</span>
+                <span><strong>{{ winner.name }}</strong> is in the lead</span>
+            </div>
+        </div>
+
+        <!-- RIGHT: Election Info Card -->
+        <div class="card info-card">
+            <div class="card-header">
+                <h2 class="card-title">Election Info</h2>
+                <span class="status-badge" [class.status-active]="selectedElection.status === 'active'"
+                    [class.status-ended]="selectedElection.status === 'ended'"
+                    [class.status-pending]="selectedElection.status === 'pending'">
+                    {{ selectedElection.status | titlecase }}
+                </span>
+            </div>
+
+            <div class="info-list">
+                <div class="info-row">
+                    <span class="info-label">Election ID</span>
+                    <span class="info-value">#{{ selectedElection.election_id }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Total Votes</span>
+                    <span class="info-value">{{ totalVotes }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Candidates</span>
+                    <span class="info-value">{{ selectedElection.candidates.length }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Start Date</span>
+                    <span class="info-value">{{ formatDate(selectedElection.start_date) }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">End Date</span>
+                    <span class="info-value">{{ formatDate(selectedElection.end_date) }}</span>
+                </div>
+                <div class="info-row tx-row">
+                    <span class="info-label">Tx Hash</span>
+                    <div class="tx-hash-group">
+                        <span class="info-value tx-hash-value" [title]="selectedElection.tx_hash">
+                            {{ truncateHash(selectedElection.tx_hash) }}
+                        </span>
+                        <button class="copy-btn" (click)="copyHash(selectedElection.tx_hash)" title="Copy full hash">
+                            &#x2398;
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-box" *ngIf="selectedElection.description">
+                <p class="description-label">Description</p>
+                <p class="description-text">{{ selectedElection.description }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Initial prompt state -->
+    <div class="idle-state" *ngIf="!selectedElection && !isLoadingResults">
+        <div class="idle-icon">&#x1F5F3;</div>
+        <p>Select an election and click <strong>View Results</strong> to begin.</p>
+    </div>
+
+</div>

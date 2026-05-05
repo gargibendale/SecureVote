@@ -1,0 +1,390 @@
+// ── Design Tokens ────────────────────────────────────────────────
+:host {
+    --blue-50: #eff6ff;
+    --blue-100: #dbeafe;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+
+    --green-50: #f0fdf4;
+    --green-100: #dcfce7;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+
+    --amber-50: #fffbeb;
+    --amber-100: #fef3c7;
+    --amber-500: #f59e0b;
+
+    --indigo-50: #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-500: #6366f1;
+
+    --red-500: #ef4444;
+
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .06), 0 1px 2px rgba(0, 0, 0, .04);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, .08), 0 1px 3px rgba(0, 0, 0, .05);
+
+    font-family: 'Georgia', 'Times New Roman', serif; // editorial feel for headers
+}
+
+// ── Page Shell ───────────────────────────────────────────────────
+.dashboard {
+    padding: 2rem 2.5rem;
+    background: var(--gray-50);
+    min-height: 100vh;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+// ── Page Header ──────────────────────────────────────────────────
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    font-family: Georgia, serif;
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    letter-spacing: -0.02em;
+    margin: 0 0 .25rem;
+}
+
+.page-subtitle {
+    font-size: .9rem;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+// ── Buttons ──────────────────────────────────────────────────────
+.btn-primary {
+    background: var(--blue-600);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: .6rem 1.2rem;
+    font-size: .875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease, transform .1s ease;
+
+    &:hover {
+        background: var(--blue-700);
+        transform: translateY(-1px);
+    }
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--blue-600);
+    border: none;
+    font-size: .85rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: .25rem .5rem;
+    border-radius: 6px;
+    transition: background .15s;
+
+    &:hover {
+        background: var(--blue-50);
+    }
+}
+
+// ── Stats Grid ───────────────────────────────────────────────────
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+
+    @media (max-width: 900px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 500px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 1.4rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    border-top-width: 3px; // coloured top accent line
+    transition: box-shadow .2s, transform .2s;
+
+    &:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+    }
+
+    // Top-border accent colours per variant
+    &--blue {
+        border-top-color: var(--blue-500);
+    }
+
+    &--green {
+        border-top-color: var(--green-500);
+    }
+
+    &--indigo {
+        border-top-color: var(--indigo-500);
+    }
+
+    &--amber {
+        border-top-color: var(--amber-500);
+    }
+}
+
+.stat-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+}
+
+.stat-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    line-height: 1.1;
+}
+
+.stat-label {
+    font-size: .78rem;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-top: .2rem;
+}
+
+// ── Main Two-Column Grid ─────────────────────────────────────────
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+
+    @media (max-width: 800px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ── Panels (shared card shell) ────────────────────────────────────
+.panel {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.panel-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    letter-spacing: -.01em;
+    margin: 0;
+}
+
+// ── Election List ────────────────────────────────────────────────
+.election-list {
+    padding: .5rem 0;
+}
+
+.election-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: .9rem 1.5rem;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background .15s;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background: var(--gray-50);
+    }
+}
+
+.election-meta {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    min-width: 60px;
+}
+
+// The pulsing coloured dot
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &--live {
+        background: var(--green-500);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, .6);
+        animation: pulse-green 1.8s infinite;
+    }
+
+    &--soon {
+        background: var(--amber-500);
+    }
+}
+
+// @keyframes pulse-green {
+//     0% {
+//         box-shadow: 0 0 0 0 rgba(34, 197, 94, .6);
+//     }
+
+//     70% {
+//         box-shadow: 0 0 0 7px rgba(34, 197, 94, 0);
+//     }
+
+//     100% {
+//         box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+//     }
+// }
+
+// The "Live" / "Soon" pill badge
+.status-badge {
+    font-size: .7rem;
+    font-weight: 700;
+    padding: .15rem .5rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+
+    &--live {
+        background: var(--green-100);
+        color: var(--green-600);
+    }
+
+    &--soon {
+        background: var(--amber-50);
+        color: var(--amber-500);
+    }
+}
+
+.election-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+}
+
+.election-title {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.election-date {
+    font-size: .78rem;
+    color: var(--gray-500);
+}
+
+.election-votes {
+    text-align: right;
+}
+
+.votes-count {
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--blue-600);
+    background: var(--blue-50);
+    padding: .2rem .55rem;
+    border-radius: 6px;
+}
+
+.votes-pending {
+    color: var(--gray-400);
+    font-size: .85rem;
+}
+
+// ── Activity Feed ────────────────────────────────────────────────
+.activity-list {
+    padding: .5rem 0;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .85rem;
+    padding: .85rem 1.5rem;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background .15s;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background: var(--gray-50);
+    }
+
+    // Left accent strip for 'alert' type
+    &--alert {
+        border-left: 3px solid var(--amber-500);
+        padding-left: calc(1.5rem - 3px);
+        background: var(--amber-50);
+    }
+}
+
+.activity-icon {
+    font-size: 1rem;
+    margin-top: .05rem;
+    flex-shrink: 0;
+}
+
+.activity-body {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+}
+
+.activity-desc {
+    font-size: .855rem;
+    color: var(--gray-700);
+    margin: 0;
+    line-height: 1.45;
+
+    strong {
+        color: var(--gray-900);
+        font-weight: 600;
+    }
+}
+
+.activity-time {
+    font-size: .75rem;
+    color: var(--gray-400);
+}

@@ -1,0 +1,182 @@
+<!-- ============================================================
+     ELECTIONS PAGE
+     ============================================================ -->
+
+<div class="elections-page">
+
+    <!-- ── Page Header ───────────────────────────────────────── -->
+    <header class="page-header">
+        <div class="header-content">
+            <span class="header-eyebrow">Blockchain-Secured</span>
+            <h1 class="page-title">Elections</h1>
+
+        </div>
+    </header>
+
+    <!-- ── Loading Skeleton ──────────────────────────────────── -->
+    @if (isLoading()) {
+    <div class="skeleton-wrapper">
+        @for (i of [1,2,3]; track i) {
+        <div class="skeleton-card">
+            <div class="skeleton-line wide"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line short"></div>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- ── Error State ───────────────────────────────────────── -->
+    @if (error()) {
+    <div class="error-state">
+        <span class="error-icon">⚠</span>
+        <p>{{ error() }}</p>
+        <button class="retry-btn" (click)="loadElections()">Try Again</button>
+    </div>
+    }
+
+    <!-- ── Main Content ──────────────────────────────────────── -->
+    @if (!isLoading() && !error()) {
+
+    <!-- ── ACTIVE ELECTIONS ──── -->
+    @if (activeElections().length > 0) {
+    <section class="election-section">
+        <div class="section-label">
+            <span class="pulse-dot"></span>
+            Live Now
+        </div>
+
+        <div class="cards-grid">
+            @for (election of activeElections(); track election.election_id) {
+            <article class="election-card active-card">
+
+                <div class="card-top-row">
+                    <span class="status-badge active">● Active</span>
+                    <span class="candidate-count">
+                        {{ election.candidates.length }} candidate{{ election.candidates.length !== 1 ? 's' : '' }}
+                    </span>
+                </div>
+
+                <h2 class="card-title">{{ election.title }}</h2>
+                <p class="card-description">{{ election.description }}</p>
+
+                <div class="card-dates">
+                    <div class="date-item">
+                        <span class="date-label">Started</span>
+                        <span class="date-value">{{ election.start_date | date: 'MMM d, y' }}</span>
+                    </div>
+                    <span class="date-divider">→</span>
+                    <div class="date-item">
+                        <span class="date-label">Ends</span>
+                        <span class="date-value">{{ election.end_date | date: 'MMM d, y' }}</span>
+                    </div>
+                </div>
+
+                <!-- Card Footer: Results + Details (left) + Vote (right) -->
+                <div class="card-footer">
+                    <div class="footer-left">
+                        <!-- AFTER -->
+                        <button class="results-btn" (click)="$event.stopPropagation(); onViewResults(election)">
+                            View Results
+                        </button>
+                        <button class="results-btn" (click)="$event.stopPropagation(); onSelectElection(election)">
+                            View Details
+                        </button>
+                    </div>
+                    <span class="vote-cta" (click)="castVote(election)" style="cursor:pointer">
+                        Cast Your Vote <span class="arrow">→</span>
+                    </span>
+                </div>
+
+            </article>
+            }
+        </div>
+    </section>
+    }
+
+    <!-- ── PAST ELECTIONS ──── -->
+    @if (endedElections().length > 0) {
+    <section class="election-section past-section">
+        <div class="section-label muted">
+            Past Elections
+        </div>
+
+        <div class="cards-grid">
+            @for (election of endedElections(); track election.election_id) {
+            <!-- Ended cards are fully clickable too — navigate to detail view -->
+            <article class="election-card ended-card">
+
+                <div class="card-top-row">
+                    <span class="status-badge ended">● Ended</span>
+                    <span class="candidate-count">
+                        {{ election.candidates.length }} candidate{{ election.candidates.length !== 1 ? 's' : '' }}
+                    </span>
+                </div>
+
+                <h2 class="card-title">{{ election.title }}</h2>
+                <p class="card-description">{{ election.description }}</p>
+
+                <div class="card-dates">
+                    <div class="date-item">
+                        <span class="date-label">Started</span>
+                        <span class="date-value">{{ election.start_date | date: 'MMM d, y' }}</span>
+                    </div>
+                    <span class="date-divider">→</span>
+                    <div class="date-item">
+                        <span class="date-label">Ended</span>
+                        <span class="date-value">{{ election.end_date | date: 'MMM d, y' }}</span>
+                    </div>
+                </div>
+
+                <!-- TX Hash — clickable copy button, stopPropagation so card click doesn't fire -->
+                @if (election.tx_hash) {
+                <div class="tx-row">
+                    <button class="tx-hash-btn" (click)="copyTxHash($event, election)" [title]="election.tx_hash">
+                        <span class="tx-label">TX</span>
+                        <span class="tx-value">
+                            {{ election.tx_hash | slice:0:10 }}...{{ election.tx_hash | slice:-6 }}
+                        </span>
+                        <!-- Toggle between copy icon and checkmark -->
+                        @if (copiedTxId() === election.election_id) {
+                        <span class="tx-icon copied">✓</span>
+                        } @else {
+                        <!-- SVG copy icon -->
+                        <svg class="tx-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="5" y="5" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4" />
+                            <path d="M3 11V3.5A1.5 1.5 0 0 1 4.5 2H11" stroke="currentColor" stroke-width="1.4"
+                                stroke-linecap="round" />
+                        </svg>
+                        }
+                    </button>
+                </div>
+                }
+
+                <!-- Card Footer: Results (left) + View Details (right) -->
+                <div class="card-footer">
+                    <!-- AFTER -->
+                    <button class="results-btn" (click)="$event.stopPropagation(); onViewResults(election)">
+                        View Results
+                    </button>
+                    <span class="vote-cta ended-cta" (click)="onSelectElection(election)" style="cursor:pointer">
+                        View Details <span class="arrow">→</span>
+                    </span>
+                </div>
+
+            </article>
+            }
+        </div>
+    </section>
+    }
+
+    <!-- ── Empty State ──── -->
+    @if (activeElections().length === 0 && endedElections().length === 0) {
+    <div class="empty-state">
+        <div class="empty-icon">🗳️</div>
+        <h3>No Elections Yet</h3>
+        <p>There are no elections scheduled at this time. Check back soon.</p>
+    </div>
+    }
+
+    }
+
+</div>

@@ -1,0 +1,72 @@
+<!-- cast-vote.component.html -->
+<div class="cast-vote">
+
+    <!-- Timeout warning banner -->
+    @if (showTimeoutWarning()) {
+    <div class="timeout-banner">
+        Session expiring soon due to inactivity — your vote has not been submitted.
+    </div>
+    }
+
+    <!-- Election header -->
+    <div class="election-header">
+        <p class="election-label">You are voting in</p>
+        <h2 class="election-title">{{ election.title }}</h2>
+        <p class="election-meta">{{ election.description }}</p>
+    </div>
+
+    <!-- Candidate grid -->
+    <div class="candidate-grid">
+        @for (candidate of election.candidates; track candidate.candidate_id) {
+        <button class="candidate-card" [class.selected]="selectedCandidate()?.candidate_id === candidate.candidate_id"
+            (click)="selectCandidate(candidate)" type="button">
+
+            <!-- Selection indicator -->
+            <span class="selection-ring">
+                @if (selectedCandidate()?.candidate_id === candidate.candidate_id) {
+                <span class="ring-dot"></span>
+                }
+            </span>
+
+            <!-- Candidate avatar (initials) -->
+            <div class="candidate-avatar">
+                {{ getInitials(candidate.name) }}
+            </div>
+
+            <div class="candidate-info">
+                <p class="candidate-name">{{ candidate.name }}</p>
+                <p class="candidate-party">{{ candidate.party }}</p>
+                @if (candidate.description) {
+                <p class="candidate-desc">{{ candidate.description }}</p>
+                }
+            </div>
+        </button>
+        }
+    </div>
+
+    <!-- Error message -->
+    @if (submitError()) {
+    <p class="submit-error">{{ submitError() }}</p>
+    }
+
+    <!-- Submit -->
+    <div class="submit-row">
+        @if (selectedCandidate()) {
+        <p class="submit-hint">
+            Voting for <strong>{{ selectedCandidate()!.name }}</strong>
+        </p>
+        } @else {
+        <p class="submit-hint muted">Select a candidate above to continue</p>
+        }
+
+        <button class="submit-btn" [disabled]="!selectedCandidate() || isSubmitting()" (click)="submitVote()"
+            type="button">
+            @if (isSubmitting()) {
+            <span class="spinner"></span> Submitting...
+            } @else {
+            Cast Vote
+            }
+        </button>
+    </div>
+
+</div>

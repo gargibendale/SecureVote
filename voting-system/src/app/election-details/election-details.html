@@ -1,0 +1,112 @@
+<!-- Loading state -->
+@if (isLoading()) {
+<div class="state-container">
+    <div class="spinner"></div>
+    <p>Loading election details…</p>
+</div>
+}
+
+<!-- Error state -->
+@else if (error()) {
+<div class="state-container error">
+    <span class="state-icon">⚠</span>
+    <p>{{ error() }}</p>
+    <button class="btn-secondary" (click)="goBack()">← Back to Elections</button>
+</div>
+}
+
+<!-- Main content -->
+@else if (election(); as e) {
+<div class="page">
+
+    <!-- ── Hero Banner ── -->
+    <header class="hero">
+        <div class="hero-inner">
+            <button class="back-btn" (click)="goBack()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                All Elections
+            </button>
+
+            <div class="hero-top">
+                <span class="status-badge" [class]="'badge--' + e.status">
+                    @if (e.status === 'active') { <span class="pulse-dot"></span> }
+                    {{ e.status | titlecase }}
+                </span>
+                <span class="election-id">ID #{{ e.election_id }}</span>
+            </div>
+
+            <h1 class="hero-title">{{ e.title }}</h1>
+            <p class="hero-desc">{{ e.description }}</p>
+
+            <!-- Date strip -->
+            <div class="date-strip">
+                <div class="date-item">
+                    <span class="date-label">Starts</span>
+                    <span class="date-value">{{ e.start_date | date: 'MMM d, yyyy' }}</span>
+                </div>
+                <div class="date-divider"></div>
+                <div class="date-item">
+                    <span class="date-label">Ends</span>
+                    <span class="date-value">{{ e.end_date | date: 'MMM d, yyyy' }}</span>
+                </div>
+                @if (e.status === 'active') {
+                <div class="date-divider"></div>
+                <div class="date-item highlight">
+                    <span class="date-label">Remaining</span>
+                    <span class="date-value">{{ getDaysRemaining(e.end_date) }} days</span>
+                </div>
+                }
+            </div>
+
+            <!-- Blockchain badge -->
+            <div class="tx-row">
+                <span class="tx-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                    </svg>
+                    On-chain TX
+                </span>
+                <code class="tx-hash">{{ shortTxHash(e.tx_hash) }}</code>
+                <button class="copy-btn" (click)="copyTxHash(e.tx_hash)" [class.copied]="copiedTx()">
+                    @if (copiedTx()) { ✓ Copied } @else { Copy }
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── Candidates ── -->
+    <section class="candidates-section">
+        <div class="section-inner">
+            <div class="section-header">
+                <h2>Candidates</h2>
+                <span class="candidate-count">{{ e.candidates.length }} registered</span>
+            </div>
+
+            <div class="candidates-grid">
+                @for (candidate of e.candidates; track candidate.candidate_id) {
+                <div class="candidate-card">
+                    <div class="candidate-avatar">
+                        {{ candidate.name.charAt(0) }}
+                    </div>
+                    <div class="candidate-info">
+                        <h3 class="candidate-name">{{ candidate.name }}</h3>
+                        <span class="candidate-party">{{ candidate.party }}</span>
+                        <p class="candidate-desc">{{ candidate.description }}</p>
+                    </div>
+                    <div class="candidate-id">#{{ candidate.candidate_id }}</div>
+                </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Footer meta ── -->
+    <footer class="page-footer">
+        <span>Created {{ e.created_at | date: 'MMM d, yyyy, h:mm a' }}</span>
+    </footer>
+
+</div>
+}

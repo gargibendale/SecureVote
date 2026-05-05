@@ -1,0 +1,297 @@
+// key-upload.component.scss
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:host {
+    --blue-50: #eff6ff;
+    --blue-100: #dbeafe;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-800: #1e293b;
+    --green-500: #22c55e;
+    --green-50: #f0fdf4;
+    --red-500: #ef4444;
+    --red-50: #fef2f2;
+
+    font-family: 'DM Sans', sans-serif;
+    display: block;
+}
+
+/* ── Layout ──────────────────────────────────────────────── */
+.key-upload-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #f8fafc;
+}
+
+/* ── Step label ──────────────────────────────────────────── */
+.step-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    align-self: flex-start;
+    max-width: 480px;
+    width: 100%;
+}
+
+.step-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--blue-600);
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+}
+
+.step-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--slate-500);
+    letter-spacing: 0.02em;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .06), 0 4px 16px rgba(0, 0, 0, .04);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+}
+
+.icon-lockup {
+    width: 48px;
+    height: 48px;
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.shield-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--blue-600);
+}
+
+.card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--slate-800);
+    margin: 0 0 0.2rem;
+}
+
+.card-subtitle {
+    font-size: 0.8rem;
+    color: var(--slate-400);
+    margin: 0;
+}
+
+/* ── Upload zone ─────────────────────────────────────────── */
+.upload-zone {
+    border: 1.5px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: #fafbfc;
+    margin-bottom: 1.25rem;
+    min-height: 168px;
+    justify-content: center;
+
+    &:hover {
+        border-color: var(--blue-500);
+        background: var(--blue-50);
+    }
+
+    &--success {
+        border-color: var(--green-500);
+        border-style: solid;
+        background: var(--green-50);
+        cursor: default;
+
+        &:hover {
+            background: var(--green-50);
+            border-color: var(--green-500);
+        }
+    }
+
+    &--error {
+        border-color: var(--red-500);
+        border-style: solid;
+        background: var(--red-50);
+
+        &:hover {
+            background: var(--red-50);
+            border-color: var(--red-500);
+        }
+    }
+}
+
+.upload-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--slate-400);
+    margin-bottom: 0.25rem;
+}
+
+.success-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--green-500);
+    margin-bottom: 0.25rem;
+}
+
+.error-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--red-500);
+    margin-bottom: 0.25rem;
+}
+
+.upload-primary {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--slate-600);
+    margin: 0;
+    text-align: center;
+
+    code {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.85em;
+        background: var(--blue-50);
+        color: var(--blue-700);
+        padding: 0.1em 0.35em;
+        border-radius: 4px;
+    }
+}
+
+.upload-secondary {
+    font-size: 0.78rem;
+    color: var(--slate-400);
+    margin: 0;
+    text-align: center;
+}
+
+.hash-preview {
+    color: var(--slate-500);
+}
+
+.hash-mono {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85em;
+    color: var(--slate-600);
+    letter-spacing: 0.03em;
+}
+
+.error-text {
+    color: var(--red-500);
+}
+
+/* ── Spinner ─────────────────────────────────────────────── */
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 2.5px solid var(--blue-100);
+    border-top-color: var(--blue-500);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-bottom: 0.25rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Security note ───────────────────────────────────────── */
+.security-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.78rem;
+    color: var(--blue-700);
+    line-height: 1.5;
+}
+
+.note-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── Next button ─────────────────────────────────────────── */
+.btn-next {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.875rem 1.5rem;
+    background: var(--blue-600);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+    letter-spacing: 0.01em;
+
+    &:hover:not(:disabled) {
+        background: var(--blue-700);
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        background: #cbd5e1;
+        color: #94a3b8;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+}
+
+.arrow-icon {
+    width: 18px;
+    height: 18px;
+}

@@ -1,0 +1,151 @@
+@if (user()) {
+<div class="container">
+
+    @if (user()?.biometric_data) {
+    <div class="verified-banner">
+        Biometric data has been collected for this user.
+    </div>
+    }
+
+    <h2>Biometric Capture</h2>
+
+    <!-- Step progress pills -->
+    <div class="step-pills">
+        @for (step of steps; track step.key) {
+        <div class="pill" [class.active]="currentStep() === step.key" [class.done]="captures[step.key] !== null"
+            (click)="currentStep.set(step.key)">
+            @if (captures[step.key]) { ✔ } {{ step.label }}
+        </div>
+        }
+    </div>
+
+    <!-- Current step instruction -->
+    <p class="instruction">{{ currentStepMeta.instruction }}</p>
+
+    <!-- Camera section -->
+    <div class="camera-section">
+        <div class="camera-wrapper">
+            <video #videoElement autoplay playsinline></video>
+
+            <!-- Conditionally show the correct SVG overlay based on the current step -->
+            @switch (currentStep()) {
+
+            @case ('front') {
+            <svg class="face-overlay" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Brackets -->
+                <path d="M15 15 L15 45 M15 15 L45 15" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M285 15 L285 45 M285 15 L255 15" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M15 385 L15 355 M15 385 L45 385" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M285 385 L285 355 M285 385 L255 385" fill="none" stroke="rgba(255,255,255,0.7)"
+                    stroke-width="2" />
+                <!-- Face oval -->
+                <ellipse cx="150" cy="175" rx="80" ry="105" fill="none" stroke="rgba(255,255,255,0.85)"
+                    stroke-width="2.5" stroke-dasharray="8 5" />
+                <!-- Eyes -->
+                <ellipse cx="115" cy="155" rx="18" ry="10" fill="none" stroke="rgba(255,255,255,0.45)"
+                    stroke-width="1.5" />
+                <ellipse cx="185" cy="155" rx="18" ry="10" fill="none" stroke="rgba(255,255,255,0.45)"
+                    stroke-width="1.5" />
+                <!-- Centre line -->
+                <line x1="150" y1="75" x2="150" y2="270" stroke="rgba(255,255,255,0.12)" stroke-width="1.2"
+                    stroke-dasharray="5 5" />
+                <!-- Eyebrows -->
+                <path d="M97 140 Q115 133 133 138" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"
+                    stroke-linecap="round" />
+                <path d="M167 138 Q185 133 203 140" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"
+                    stroke-linecap="round" />
+                <!-- Mouth -->
+                <path d="M127 215 Q150 224 173 215" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"
+                    stroke-linecap="round" />
+            </svg>
+            }
+
+            @case ('left') {
+            <svg class="face-overlay" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Brackets -->
+                <path d="M15 15 L15 45 M15 15 L45 15" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M285 15 L285 45 M285 15 L255 15" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M15 385 L15 355 M15 385 L45 385" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M285 385 L285 355 M285 385 L255 385" fill="none" stroke="rgba(255,255,255,0.7)"
+                    stroke-width="2" />
+                <!-- Asymmetric face oval: right side fuller, left compressed -->
+                <path d="
+              M 148 72
+              C 195 72, 225 105, 225 175
+              C 225 245, 195 278, 148 278
+              C 118 278, 95 260, 88 235
+              C 80 210, 80 140, 88 115
+              C 95 90, 118 72, 148 72 Z
+            " fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2.5" stroke-dasharray="8 5" />
+                <!-- Direction cue -->
+                <text x="150" y="360" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="14"
+                    font-family="sans-serif">← Turn left ~30°</text>
+            </svg>
+            }
+
+            @case ('right') {
+            <svg class="face-overlay" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Brackets -->
+                <path d="M15 15 L15 45 M15 15 L45 15" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M285 15 L285 45 M285 15 L255 15" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M15 385 L15 355 M15 385 L45 385" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M285 385 L285 355 M285 385 L255 385" fill="none" stroke="rgba(255,255,255,0.7)"
+                    stroke-width="2" />
+                <!-- Asymmetric face oval: left side fuller (near), right compressed -->
+                <path d="
+              M 152 72
+              C 182 72, 205 90, 212 115
+              C 220 140, 220 210, 212 235
+              C 205 260, 182 278, 152 278
+              C 105 278, 75 245, 75 175
+              C 75 105, 105 72, 152 72 Z
+            " fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2.5" stroke-dasharray="8 5" />
+
+                <!-- Direction cue -->
+                <text x="150" y="360" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="14"
+                    font-family="sans-serif">Turn right ~30° →</text>
+            </svg>
+            }
+
+            }
+        </div>
+
+        <canvas #canvasElement hidden></canvas>
+
+        <div class="buttons">
+            <button (click)="startCamera()">Start Camera</button>
+            <button (click)="captureImage()" [disabled]="!stream">Capture</button>
+        </div>
+    </div>
+
+    <!-- Capture status for each step -->
+    <div class="capture-status">
+        @for (step of steps; track step.key) {
+        <div class="status-item" [class.done]="captures[step.key]">
+            <span class="icon">{{ captures[step.key] ? '✔' : '○' }}</span>
+            {{ step.label }}
+        </div>
+        }
+    </div>
+
+    <p class="guidelines">Ensure proper lighting. Keep your face within the outline and follow the direction indicator.
+    </p>
+
+    <!-- Only enabled once all three are captured -->
+    <div class="submit-section">
+        <button (click)="submitBiometrics()" [disabled]="!allCaptured">
+            Submit Biometrics
+        </button>
+    </div>
+
+</div>
+
+@if (isLoading()) {
+<div class="overlay">
+    <div class="loader-card">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Submitting biometrics...</p>
+    </div>
+</div>
+}
+}

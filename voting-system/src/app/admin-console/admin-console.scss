@@ -1,0 +1,112 @@
+// ── Layout shell ──────────────────────────────────────────────
+.console-shell {
+    display: flex;
+    height: 100vh;
+    background-color: #f4f6f9;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+// ── Sidebar ───────────────────────────────────────────────────
+.sidebar {
+    width: 230px;
+    min-width: 230px; // prevents shrinking on flex resize
+    background-color: #0f172a; // deep navy — conveys authority/security
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    gap: 0;
+
+    // Brand / logo area at the top of the sidebar
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0 1.25rem 1.5rem;
+        border-bottom: 1px solid #1e293b;
+
+        &-icon {
+            font-size: 1.4rem;
+        }
+
+        &-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #f8fafc;
+            letter-spacing: 0.02em;
+        }
+    }
+
+    // Nav list container
+    &__nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 1rem 0.75rem;
+        flex: 1; // pushes footer to the bottom
+    }
+
+    // Footer pinned to the bottom of the sidebar
+    &__footer {
+        padding: 1rem 1.25rem 0;
+        border-top: 1px solid #1e293b;
+
+        &-text {
+            font-size: 0.7rem;
+            color: #afafaf;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+    }
+}
+
+// ── Nav items ─────────────────────────────────────────────────
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+        background: #1e293b;
+        color: #e2e8f0;
+    }
+
+    // Active state — highlighted with an accent color
+    &--active {
+        background: #1d4ed8; // strong blue — signals the selected state clearly
+        color: #ffffff;
+
+        &:hover {
+            background: #1d4ed8; // keeps it stable on hover when active
+        }
+    }
+
+    &__icon {
+        font-size: 1rem;
+        width: 1.2rem;
+        text-align: center;
+    }
+
+    &__label {
+        flex: 1;
+    }
+}
+
+// ── Main content area ─────────────────────────────────────────
+.console-main {
+    flex: 1; // takes all remaining horizontal space after the sidebar
+    overflow-y: auto; // allows the content to scroll independently
+    padding: 2rem;
+}

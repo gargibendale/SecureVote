@@ -1,0 +1,82 @@
+<!-- ===== HERO SECTION ===== -->
+<!-- Full-width intro area with a tagline and brief caption -->
+<section class="hero">
+  <div class="hero__badge">
+    <!-- Small shield icon to reinforce security/trust -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path
+        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+    </svg>
+    Blockchain-Secured Voting
+  </div>
+
+  <h1 class="hero__title">
+    Your Vote. <span class="hero__title--accent">Verified.</span> Protected.
+  </h1>
+
+  <p class="hero__caption">
+    A secure and transparent voting platform powered by blockchain technology, designed to prevent fraud, ensure voter
+    integrity, and enable tamper-proof election results.
+  </p>
+</section>
+
+<!-- ===== ONBOARDING STEPS SECTION ===== -->
+<section class="steps-section">
+  <h2 class="steps-section__heading">How It Works</h2>
+  <p class="steps-section__subheading">Four simple steps stand between you and a verified vote.</p>
+
+  <!-- Horizontal stepper — each step is a card connected by a line -->
+  <div class="stepper">
+
+    <!-- Loop over each step defined in the component class -->
+    <ng-container *ngFor="let step of steps; let i = index; let last = last">
+
+      <!-- ── Step card ── -->
+      <div class="step">
+        <!-- Numbered icon bubble -->
+        <div class="step__bubble">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path [attr.d]="step.icon" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span class="step__number">{{ step.number }}</span>
+        </div>
+
+        <!-- Step label and description -->
+        <div class="step__body">
+          <h3 class="step__title">{{ step.title }}</h3>
+          <p class="step__description">{{ step.description }}</p>
+        </div>
+      </div>
+
+      <!-- Connector arrow between steps (not after the last step) -->
+      <div class="stepper__connector" *ngIf="!last" aria-hidden="true">
+        <svg viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Dashed line -->
+          <line x1="0" y1="8" x2="32" y2="8" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" />
+          <!-- Arrowhead -->
+          <polyline points="28,3 36,8 28,13" stroke="currentColor" stroke-width="1.5" fill="none"
+            stroke-linejoin="round" stroke-linecap="round" />
+        </svg>
+      </div>
+
+    </ng-container>
+  </div>
+</section>
+
+<!-- ===== MANDATORY NOTICE SECTION ===== -->
+<!-- Clearly tells users all steps must be completed before voting -->
+<section class="notice">
+  <div class="notice__inner">
+    <div class="notice__icon" aria-hidden="true">
+      <!-- Warning / info icon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+    </div>
+    <div class="notice__text">
+      <strong>All four steps are mandatory to become an eligible voter.</strong>
+    </div>
+  </div>
+</section>

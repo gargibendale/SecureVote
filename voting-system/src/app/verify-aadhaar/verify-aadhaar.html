@@ -1,0 +1,80 @@
+@if (user()) {
+<div class="container">
+
+    @if (user()?.ekyc_verified) {
+    <div class="verified-banner">
+        Aadhaar has been verified for this user.
+    </div>
+    }
+
+    <h2>Verify Aadhaar</h2>
+
+    <div class="user-card">
+        <p><strong>Name:</strong> {{ user()?.name }}</p>
+        <p><strong>Email:</strong> {{ user()?.email }}</p>
+        <p><strong>Date of Birth:</strong> {{ user()?.dob }}</p>
+    </div>
+
+    <div class="input-group">
+        <label>Aadhaar Number</label>
+        <input type="text" [ngModel]="aadhaar()" (ngModelChange)="aadhaar.set($event)" maxlength="12" />
+    </div>
+
+    <div class="camera-section">
+
+        <!-- wrapper anchors the overlay -->
+        <div class="camera-wrapper">
+            <video #videoElement autoplay playsinline></video>
+
+            <!-- SVG overlay — sits on top of the video, pointer-events:none so clicks pass through -->
+            <svg class="face-overlay" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+
+                <!-- Main face oval (dashed white) -->
+                <ellipse cx="150" cy="175" rx="80" ry="105" fill="none" stroke="rgba(255,255,255,0.85)"
+                    stroke-width="2.5" stroke-dasharray="8 5" />
+
+                <!-- Eye outlines (subtle) -->
+                <ellipse cx="115" cy="155" rx="18" ry="10" fill="none" stroke="rgba(255,255,255,0.45)"
+                    stroke-width="1.5" />
+                <ellipse cx="185" cy="155" rx="18" ry="10" fill="none" stroke="rgba(255,255,255,0.45)"
+                    stroke-width="1.5" />
+
+                <!-- Corner bracket markers to show framing -->
+                <path d="M15 15 L15 45 M15 15 L45 15" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M285 15 L285 45 M285 15 L255 15" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M15 385 L15 355 M15 385 L45 385" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+                <path d="M285 385 L285 355 M285 385 L255 385" fill="none" stroke="rgba(255,255,255,0.7)"
+                    stroke-width="2" />
+            </svg>
+        </div>
+
+        <canvas #canvasElement hidden></canvas>
+
+        <div class="buttons">
+            <button (click)="startCamera()">Start Camera</button>
+            <button (click)="captureImage()">Capture</button>
+        </div>
+    </div>
+
+    @if (capturedImage) {
+    <div class="preview">
+        <p>Image captured successfully ✔</p>
+    </div>
+    }
+
+    <p>Guidelines for best practices: Ensure proper lighting, avoid extreme angles and keep the face full frontal with
+        eyes looking straight ahead.</p>
+
+    <div class="submit-section">
+        <div class="submit-section"> <button (click)="verifyAadhaar()">Verify Aadhaar</button> </div>
+    </div>
+</div>
+@if (isLoading()) {
+<div class="overlay">
+    <div class="loader-card">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Verifying your Aadhaar...</p>
+    </div>
+</div>
+}
+}

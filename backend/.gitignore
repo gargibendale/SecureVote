@@ -1,0 +1,5 @@
+.env
+/private_keys/
+/images/
+/logs/
+.venv/

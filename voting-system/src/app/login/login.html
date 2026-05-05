@@ -1,0 +1,61 @@
+<!-- MAIN CONTENT -->
+<main class="main">
+  <!-- LEFT SECTION -->
+  <section class="left">
+    <h1>
+      Where every vote is<br />
+      <span>secure, verifiable,</span><br />
+      and counted.
+    </h1>
+
+    <img
+      src="assets/voting.svg"
+      alt="Voting Illustration"
+      class="hero-image"
+    />
+  </section>
+
+  <!-- RIGHT SECTION -->
+  <section class="right">
+  <div class="login-card">
+    <h2>Login</h2>
+
+    <!-- [formGroup] binds the template form to the loginForm instance in the class -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label>Email</label>
+        <!-- formControlName links this input to the 'email' FormControl -->
+        <input type="email" placeholder="you@example.com" formControlName="email" />
+
+        <!-- Show validation errors only after the user has touched/blurred the field -->
+        @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+          <span class="field-error">
+            @if (loginForm.get('email')?.hasError('required')) { Email is required. }
+            @if (loginForm.get('email')?.hasError('email')) { Enter a valid email address. }
+          </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="••••••••" formControlName="password" />
+
+        @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+          <span class="field-error">
+            @if (loginForm.get('password')?.hasError('required')) { Password is required. }
+            @if (loginForm.get('password')?.hasError('minlength')) { Minimum 6 characters. }
+          </span>
+        }
+      </div>
+
+      <!-- [disabled] greys out the button while the HTTP call is pending -->
+      <button type="submit" class="login-btn" [disabled]="isLoading">
+        {{ isLoading ? 'Logging in…' : 'Login' }}
+      </button>
+
+    </form>
+  </div>
+</section>
+</main>
+

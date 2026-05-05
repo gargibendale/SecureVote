@@ -1,0 +1,120 @@
+<div class="me-container">
+    <div class="me-header">
+        <h1 class="me-title">Manage Elections</h1>
+        <p class="me-subtitle">View and manage all registered elections</p>
+    </div>
+
+    <!-- Loading state -->
+    @if (loading()) {
+    <div class="me-state-message">Loading elections...</div>
+    }
+
+    <!-- Error state -->
+    @if (error()) {
+    <div class="me-state-message me-error">{{ error() }}</div>
+    }
+
+    <!-- Elections list -->
+    @if (!loading() && !error()) {
+    <div class="me-table-header">
+        <span class="col-id">ID</span>
+        <span class="col-title">Title</span>
+        <span class="col-date">Start Date</span>
+        <span class="col-date">End Date</span>
+        <span class="col-status">Status</span>
+        <span class="col-actions">Actions</span>
+    </div>
+
+    <div class="me-list">
+        @for (election of elections(); track election.election_id) {
+        <div class="me-card" [class.expanded]="expandedId() === election.election_id"
+            (click)="toggleExpand(election.election_id)">
+            <!-- Summary row — always visible -->
+            <div class="me-card-row">
+                <span class="col-id">#{{ election.election_id }}</span>
+                <span class="col-title">{{ election.title }}</span>
+                <span class="col-date">{{ election.start_date | date: 'dd MMM yyyy, HH:mm' }}</span>
+                <span class="col-date">{{ election.end_date | date: 'dd MMM yyyy, HH:mm' }}</span>
+                <span class="col-status">
+                    <span class="status-badge" [class]="'status-' + election.status">
+                        {{ election.status }}
+                    </span>
+                </span>
+                <span class="col-actions" (click)="$event.stopPropagation()">
+                    <button class="btn-results" (click)="onViewResults($event, election)">Results</button>
+                    <button class="btn-end" [disabled]="election.status === 'ended'"
+                        (click)="onEndElection($event, election)">End</button>
+                </span>
+                <span class="col-chevron">
+                    <svg class="chevron-icon" [class.rotated]="expandedId() === election.election_id"
+                        xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </span>
+            </div>
+
+            <!-- Expanded detail panel -->
+            @if (expandedId() === election.election_id) {
+            <div class="me-card-detail" (click)="$event.stopPropagation()">
+                <div class="detail-section">
+                    <p class="detail-label">Description</p>
+                    <p class="detail-value">{{ election.description }}</p>
+                </div>
+
+                <div class="detail-section">
+                    <p class="detail-label">Transaction Hash</p>
+                    <p class="detail-value mono">{{ election.tx_hash }}</p>
+                </div>
+
+                <div class="detail-section">
+                    <p class="detail-label">Created At</p>
+                    <p class="detail-value">{{ election.created_at | date: 'dd MMM yyyy, HH:mm:ss' }}</p>
+                </div>
+
+                <div class="detail-section">
+                    <p class="detail-label">Candidates</p>
+                    <div class="candidates-grid">
+                        @for (candidate of election.candidates; track candidate.candidate_id) {
+                        <div class="candidate-card">
+                            <div class="candidate-header">
+                                <span class="candidate-name">{{ candidate.name }}</span>
+                                <span class="candidate-id">ID: {{ candidate.candidate_id }}</span>
+                            </div>
+                            <span class="candidate-party">{{ candidate.party }}</span>
+                            <p class="candidate-desc">{{ candidate.description }}</p>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+    }
+</div>
+
+@if (confirmEndId() !== null) {
+<div class="overlay" (click)="cancelEnd()">
+    <div class="confirm-card" (click)="$event.stopPropagation()">
+        <div class="confirm-icon">⚠️</div>
+        <h2 class="confirm-title">End Election</h2>
+        <p class="confirm-message">
+            Are you sure you want to end election <strong>#{{ confirmEndId() }}</strong>?
+            This action is recorded on the blockchain and cannot be undone.
+        </p>
+
+        @if (endError()) {
+        <p class="confirm-error">{{ endError() }}</p>
+        }
+
+        <div class="confirm-actions">
+            <button class="btn-cancel" (click)="cancelEnd()" [disabled]="endLoading()">Cancel</button>
+            <button class="btn-confirm" (click)="confirmEnd()" [disabled]="endLoading()">
+                {{ endLoading() ? 'Ending...' : 'Yes, End Election' }}
+            </button>
+        </div>
+    </div>
+</div>
+}

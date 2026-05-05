@@ -1,0 +1,81 @@
+<div class="profile-page">
+  @if (profile(); as p) {
+    <div class="profile-card">
+
+      <!-- Top accent bar -->
+      <div class="card-accent"></div>
+
+      <!-- Avatar + Name Header -->
+      <div class="profile-header">
+        <div class="avatar">
+          <span class="avatar-initials">{{ initials }}</span>
+        </div>
+        <div class="header-text">
+          <h1 class="profile-name">{{ p.name }}</h1>
+          <p class="profile-email">{{ p.email }}</p>
+          <div class="roles">
+            @for (role of p.role; track role) {
+              <span class="role-badge">{{ formatRole(role) }}</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Details Grid -->
+      <div class="details-grid">
+
+        <div class="detail-item">
+          <span class="detail-label">Date of Birth</span>
+          <span class="detail-value">{{ p.dob }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">User ID</span>
+          <span class="detail-value mono">{{ p.user_id }}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">eKYC Verified</span>
+          <span class="detail-value status" [class.verified]="p.ekyc_verified" [class.unverified]="!p.ekyc_verified">
+            <span class="status-dot"></span>
+            {{ p.ekyc_verified ? 'Verified' : 'Not Verified' }}
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-label">Biometric</span>
+          <span class="detail-value status" [class.verified]="p.biometric_data" [class.unverified]="!p.biometric_data">
+            <span class="status-dot"></span>
+            {{ p.biometric_data ? 'Enrolled' : 'Not Enrolled' }}
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+  } @else {
+    <!-- Skeleton loader shown while HTTP request is in flight -->
+    <div class="profile-card skeleton-card">
+      <div class="card-accent"></div>
+      <div class="profile-header">
+        <div class="avatar skeleton-block"></div>
+        <div class="header-text">
+          <div class="skeleton-block" style="width: 180px; height: 28px; border-radius: 6px;"></div>
+          <div class="skeleton-block" style="width: 220px; height: 16px; border-radius: 4px; margin-top: 10px;"></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="details-grid">
+        @for (i of [1,2,3,4]; track i) {
+          <div class="detail-item">
+            <div class="skeleton-block" style="width: 80px; height: 12px; border-radius: 3px;"></div>
+            <div class="skeleton-block" style="width: 140px; height: 18px; border-radius: 4px; margin-top: 8px;"></div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,40 @@
+<div class="console-shell">
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+
+        <div class="sidebar__footer">
+            <span class="sidebar__footer-text">Admin Console</span>
+        </div>
+
+        <nav class="sidebar__nav">
+            <!-- Loop over navItems and render one button per view -->
+            @for (item of navItems; track item.id) {
+            <button class="nav-item" [class.nav-item--active]="activeView() === item.id" (click)="setView(item.id)">
+                <span class="nav-item__icon">{{ item.icon }}</span>
+                <span class="nav-item__label">{{ item.label }}</span>
+            </button>
+            }
+        </nav>
+
+
+    </aside>
+
+    <!-- ── MAIN CONTENT AREA ── -->
+    <main class="console-main">
+
+        <!-- Each view is conditionally rendered based on activeView signal.
+         Only one block renders at a time — like an if/else if chain. -->
+        @if (activeView() === 'dashboard') {
+        <app-dashboard />
+        } @else if (activeView() === 'create-election') {
+        <app-create-election />
+        } @else if (activeView() === 'manage-elections') {
+        <app-manage-elections />
+        } @else if (activeView() === 'results') {
+        <app-results />
+        }
+
+    </main>
+
+</div>

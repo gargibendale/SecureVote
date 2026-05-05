@@ -1,0 +1,521 @@
+// ============================================================
+// ELECTIONS COMPONENT STYLES
+// ============================================================
+
+// ── Design Tokens ──────────────────────────────────────────
+:host {
+    --blue-600: #1a56db;
+    --blue-500: #3b82f6;
+    --blue-100: #dbeafe;
+    --blue-50: #eff6ff;
+
+    --slate-900: #0f172a;
+    --slate-700: #334155;
+    --slate-500: #64748b;
+    --slate-400: #94a3b8;
+    --slate-200: #e2e8f0;
+    --slate-100: #f1f5f9;
+    --white: #ffffff;
+
+    --green-500: #22c55e;
+    --green-50: #f0fdf4;
+
+    --radius-card: 10px;
+    --radius-badge: 20px;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, .06), 0 1px 2px rgba(0, 0, 0, .04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, .08), 0 1px 4px rgba(0, 0, 0, .04);
+    --shadow-hover: 0 8px 28px rgba(26, 86, 219, .14), 0 2px 8px rgba(0, 0, 0, .06);
+
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --font-body: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+
+    --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ── Page Shell ─────────────────────────────────────────────
+.elections-page {
+    min-height: 100vh;
+    background: var(--slate-100);
+    font-family: var(--font-body);
+    padding: 0 0 80px;
+}
+
+// ── Page Header ────────────────────────────────────────────
+.page-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--slate-200);
+    padding: 56px 0 40px;
+    margin-bottom: 40px;
+}
+
+.header-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.header-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue-600);
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    border-radius: var(--radius-badge);
+    padding: 4px 12px;
+    margin-bottom: 16px;
+}
+
+.page-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--slate-900);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 12px;
+}
+
+.page-subtitle {
+    font-size: 15px;
+    color: var(--slate-500);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 560px;
+}
+
+// ── Section Layout ─────────────────────────────────────────
+.election-section {
+    max-width: 720px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+}
+
+// Past section is slightly muted overall but still fully interactive
+.past-section {
+    opacity: 0.9;
+}
+
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-500);
+    margin-bottom: 20px;
+
+    &.muted {
+        color: var(--slate-400);
+    }
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green-500);
+    display: inline-block;
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        background: var(--green-500);
+        opacity: 0.3;
+        animation: pulse 2s ease-in-out infinite;
+    }
+}
+
+
+
+// ── Cards Grid ─────────────────────────────────────────────
+.cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+// ── Election Card (shared base) ────────────────────────────
+.election-card {
+    background: var(--white);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--slate-200);
+    padding: 28px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    cursor: default; // Both active and ended cards are now clickable
+
+    &:focus-visible {
+        outline: 2px solid var(--blue-600);
+        outline-offset: 3px;
+    }
+}
+
+// Active card — blue left accent, blue hover shadow
+.active-card {
+    border-left: 3px solid var(--blue-600);
+
+    &:hover {
+        border-color: var(--blue-500);
+        box-shadow: var(--shadow-hover);
+        transform: translateY(-2px);
+
+        .arrow {
+            transform: translateX(4px);
+        }
+    }
+}
+
+// Ended card — same hover behaviour but with a slate left accent
+.ended-card {
+    border-left: 3px solid var(--slate-400);
+
+    &:hover {
+        border-color: var(--slate-500);
+        box-shadow: var(--shadow-md);
+        transform: translateY(-2px);
+
+        .arrow {
+            transform: translateX(4px);
+        }
+    }
+}
+
+// ── Card Internals ─────────────────────────────────────────
+.card-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    border-radius: var(--radius-badge);
+    padding: 3px 10px;
+
+    &.active {
+        color: #166534;
+        background: var(--green-50);
+        border: 1px solid #bbf7d0;
+    }
+
+    &.ended {
+        color: var(--slate-500);
+        background: var(--slate-200);
+        border: 1px solid var(--slate-200);
+    }
+}
+
+.candidate-count {
+    font-size: 12px;
+    color: var(--slate-400);
+    font-weight: 500;
+}
+
+.card-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--slate-900);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 0 0 8px;
+}
+
+.card-description {
+    font-size: 14px;
+    color: var(--slate-500);
+    line-height: 1.6;
+    margin: 0 0 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// ── Date Row ───────────────────────────────────────────────
+.card-dates {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--slate-200);
+    border-bottom: 1px solid var(--slate-200);
+    margin-bottom: 18px;
+}
+
+.date-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.date-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-400);
+}
+
+.date-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--slate-700);
+}
+
+.date-divider {
+    color: var(--slate-300);
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+// ── TX Hash Copy Button ────────────────────────────────────
+// Sits between dates and the card footer
+.tx-row {
+    margin-bottom: 14px;
+}
+
+.tx-hash-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--slate-100);
+    border: 1px solid var(--slate-200);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: var(--transition);
+
+    // stopPropagation handles the click conflict, but we still need
+    // to prevent the hover state from looking like the card is hovered
+    &:hover {
+        background: var(--slate-200);
+        border-color: var(--slate-400);
+    }
+}
+
+.tx-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate-500);
+}
+
+.tx-value {
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    color: var(--slate-700);
+    letter-spacing: 0.04em;
+}
+
+.tx-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--slate-400);
+    flex-shrink: 0;
+
+    // The ✓ checkmark gets a green colour to confirm success
+    &.copied {
+        width: auto;
+        height: auto;
+        font-size: 13px;
+        color: var(--green-500);
+        font-weight: 700;
+    }
+}
+
+// ── Card Footer ─────────────────────────────────────────────
+// Results button on the left, CTA text on the right
+.card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+// Groups the left-side buttons (Results + Details) together
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+// "View Results" — outlined ghost button, stopPropagation on click
+.results-btn {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--slate-600, #475569);
+    background: transparent;
+    border: 1px solid var(--slate-300, #cbd5e1);
+    border-radius: 8px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: var(--transition);
+    letter-spacing: 0.02em;
+
+    &:hover {
+        background: var(--slate-100);
+        border-color: var(--slate-400);
+        color: var(--slate-900);
+    }
+}
+
+.vote-cta {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue-600);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+}
+
+// Ended cards show "View Details" instead — muted colour
+.ended-cta {
+    color: var(--slate-500);
+}
+
+.arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+// ── Loading Skeleton ───────────────────────────────────────
+.skeleton-wrapper {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.skeleton-card {
+    background: var(--white);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--slate-200);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.skeleton-line {
+    height: 14px;
+    border-radius: 6px;
+    background: linear-gradient(90deg,
+            var(--slate-200) 25%,
+            var(--slate-100) 50%,
+            var(--slate-200) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+
+    &.wide {
+        width: 60%;
+    }
+
+    &.medium {
+        width: 85%;
+    }
+
+    &.short {
+        width: 40%;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+// ── Error State ────────────────────────────────────────────
+.error-state {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 24px;
+    text-align: center;
+    color: var(--slate-500);
+}
+
+.error-icon {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.retry-btn {
+    margin-top: 16px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--blue-600);
+    background: transparent;
+    color: var(--blue-600);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+
+    &:hover {
+        background: var(--blue-600);
+        color: var(--white);
+    }
+}
+
+// ── Empty State ────────────────────────────────────────────
+.empty-state {
+    max-width: 720px;
+    margin: 60px auto 0;
+    padding: 0 24px;
+    text-align: center;
+    color: var(--slate-500);
+
+    h3 {
+        font-family: var(--font-display);
+        font-size: 22px;
+        color: var(--slate-700);
+        margin: 16px 0 8px;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+}
+
+.empty-icon {
+    font-size: 40px;
+}
+
+// ── Responsive ────────────────────────────────────────────
+@media (max-width: 600px) {
+    .page-header {
+        padding: 36px 0 28px;
+    }
+
+    .election-card {
+        padding: 20px;
+    }
+
+    .card-title {
+        font-size: 17px;
+    }
+}

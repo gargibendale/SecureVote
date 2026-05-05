@@ -1,0 +1,43 @@
+<!-- GLOBAL HEADER -->
+<header class="header">
+  <div class="logo">
+    <a [routerLink]="['/']">
+      <img src="assets/logo3.png" alt="App Logo" />
+    </a>
+  </div>
+  <div class="login-signup">
+    @if (userService.isLoggedIn$ | async) {
+    <button class="signup-btn" (click)="accessElectionsPage()">Elections</button>
+    <button class="signup-btn" (click)="accessProfile()">Profile</button>
+    <button class="signup-btn" (click)="logout()">Logout</button>
+    <button class="signup-btn" (click)="accessSignUp()">Sign Up</button>
+    } @else {
+    <button class="signup-btn" (click)="accessElectionsPage()">Elections</button>
+    <button class="signup-btn" (click)="accessLogIn()">Login</button>
+    <button class="signup-btn" (click)="accessSignUp()">Sign Up</button>
+    }
+
+    <!-- Hamburger menu wrapper — position:relative makes the dropdown anchor to this -->
+    <div class="hamburger-wrapper" (click)="toggleMenu($event)">
+      <button class="hamburger-btn" [class.open]="isMenuOpen" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      @if (isMenuOpen) {
+      <div class="hamburger-dropdown">
+        <button (click)="goToVerifyAadhaar()">Verify Aadhaar</button>
+        <button (click)="goToSubmitBiometrics()">Submit Biometrics</button>
+        <button (click)="goToVoterCredentials()">Get Voter Credentials</button>
+        @if (isAdmin) {
+        <button (click)="goToAdminConsole()">Admin Console</button>
+        }
+      </div>
+      }
+    </div>
+  </div>
+
+</header>
+
+<router-outlet />

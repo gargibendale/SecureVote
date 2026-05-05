@@ -1,0 +1,121 @@
+<div class="page">
+    <div class="card">
+
+        <div class="card__header">
+            <h1 class="card__title">Create Election</h1>
+            <p class="card__subtitle">Fill in the details below to publish a new election on-chain.</p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+            <!-- ── Election Details ── -->
+            <section class="section">
+                <h2 class="section__title">Election details</h2>
+
+                <div class="field">
+                    <label class="label" for="title">Title</label>
+                    <input id="title" type="text" class="input" formControlName="title"
+                        placeholder="e.g. Student Council Election 2025"
+                        [class.input--error]="form.get('title')?.invalid && form.get('title')?.touched" />
+                    <span class="error-msg" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
+                        Title is required.
+                    </span>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="description">Description</label>
+                    <textarea id="description" class="input textarea" formControlName="description"
+                        placeholder="Briefly describe the purpose of this election…" rows="3"
+                        [class.input--error]="form.get('description')?.invalid && form.get('description')?.touched"></textarea>
+                    <span class="error-msg"
+                        *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
+                        Description is required.
+                    </span>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label class="label" for="start_date">Start date</label>
+                        <input id="start_date" type="datetime-local" class="input" formControlName="start_date"
+                            [class.input--error]="form.get('start_date')?.invalid && form.get('start_date')?.touched" />
+                        <span class="error-msg"
+                            *ngIf="form.get('start_date')?.invalid && form.get('start_date')?.touched">
+                            Start date is required.
+                        </span>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="end_date">End date</label>
+                        <input id="end_date" type="datetime-local" class="input" formControlName="end_date"
+                            [class.input--error]="form.get('end_date')?.invalid && form.get('end_date')?.touched" />
+                        <span class="error-msg" *ngIf="form.get('end_date')?.invalid && form.get('end_date')?.touched">
+                            End date is required.
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── Candidates ── -->
+            <section class="section" formArrayName="candidates">
+                <h2 class="section__title">Candidates</h2>
+
+                <div class="candidate-card" *ngFor="let candidate of candidates.controls; let i = index"
+                    [formGroupName]="i" [attr.aria-label]="'Candidate ' + (i + 1)">
+                    <div class="candidate-card__header">
+                        <span class="candidate-card__label">Candidate {{ i + 1 }}</span>
+                        <button type="button" class="btn-remove" (click)="removeCandidate(i)"
+                            [disabled]="candidates.length === 1" aria-label="Remove candidate">
+                            Remove
+                        </button>
+                    </div>
+
+                    <div class="field-row">
+                        <div class="field">
+                            <label class="label">Name</label>
+                            <input type="text" class="input" formControlName="name" placeholder="Full name"
+                                [class.input--error]="candidate.get('name')?.invalid && candidate.get('name')?.touched" />
+                            <span class="error-msg"
+                                *ngIf="candidate.get('name')?.invalid && candidate.get('name')?.touched">Name is
+                                required.</span>
+                        </div>
+                        <div class="field">
+                            <label class="label">Party</label>
+                            <input type="text" class="input" formControlName="party" placeholder="Party or affiliation"
+                                [class.input--error]="candidate.get('party')?.invalid && candidate.get('party')?.touched" />
+                            <span class="error-msg"
+                                *ngIf="candidate.get('party')?.invalid && candidate.get('party')?.touched">Party is
+                                required.</span>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Description</label>
+                        <textarea class="input textarea" formControlName="description"
+                            placeholder="Brief bio or platform summary…" rows="2"
+                            [class.input--error]="candidate.get('description')?.invalid && candidate.get('description')?.touched"></textarea>
+                        <span class="error-msg"
+                            *ngIf="candidate.get('description')?.invalid && candidate.get('description')?.touched">Description
+                            is required.</span>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-add" (click)="addCandidate()">
+                    + Add candidate
+                </button>
+            </section>
+
+            <!-- ── Feedback ── -->
+            <div class="alert alert--error" *ngIf="error">{{ error }}</div>
+            <div class="alert alert--success" *ngIf="success">Election created successfully! Redirecting…</div>
+
+            <!-- ── Submit ── -->
+            <div class="form-footer">
+                <button type="submit" class="btn-primary" [disabled]="loading">
+                    <span *ngIf="!loading">Publish election</span>
+                    <span *ngIf="loading" class="spinner"></span>
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

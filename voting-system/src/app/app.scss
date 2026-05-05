@@ -1,0 +1,139 @@
+/* Import font once globally */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:host {
+    font-family: 'Inter', sans-serif;
+}
+
+/* HEADER */
+.header {
+    height: 70px;
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+    background-color: white;
+}
+
+header a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.login-signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.logo img {
+    height: 70px;
+}
+
+.signup-btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    background-color: #2563eb;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.signup-btn:hover {
+    background-color: #1e40af;
+}
+
+// Wrapper gives the dropdown a "parent" to position against
+.hamburger-wrapper {
+    position: relative;
+}
+
+// The icon button itself
+.hamburger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 38px;
+    height: 38px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    cursor: pointer;
+
+    // The three lines
+    span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background-color: #374151;
+        border-radius: 2px;
+        transition: all 0.2s ease;
+    }
+
+    // When open, morph the lines into an X
+    &.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    &.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    &.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+}
+
+// The dropdown panel
+.hamburger-dropdown {
+    position: absolute;
+    top: calc(100% + 10px); // sits 10px below the button
+    right: 0; // aligns to the right edge of the wrapper
+    min-width: 200px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    z-index: 1000;
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 12px 18px;
+        text-align: left;
+        border: none;
+        background: none;
+        font-size: 14px;
+        color: #1f2937;
+        cursor: pointer;
+        border-bottom: 1px solid #f3f4f6;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover {
+            background-color: #f0f4ff;
+            color: #2563eb;
+        }
+    }
+}

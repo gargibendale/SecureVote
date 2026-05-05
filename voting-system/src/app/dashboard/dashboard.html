@@ -1,0 +1,181 @@
+<div class="dashboard">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Welcome back - here's what's happening.</p>
+        </div>
+        <button class="btn-primary">
+            <!-- Plus icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            New Election
+        </button>
+    </div>
+
+    <!-- Stat Cards Row -->
+    <div class="stats-grid">
+        @for (stat of stats; track stat.label) {
+        <div class="stat-card stat-card--{{ stat.accent }}">
+            <span class="stat-icon">
+                @switch (stat.icon) {
+
+                @case ('ballot') {
+                <!-- Box with ballot slot — represents "elections" -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <line x1="8" y1="12" x2="16" y2="12" />
+                    <line x1="8" y1="8" x2="16" y2="8" />
+                    <line x1="8" y1="16" x2="12" y2="16" />
+                </svg>
+                }
+
+                @case ('live') {
+                <!-- Radio / broadcast signal — represents "live now" -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="2" />
+                    <path d="M8.5 8.5a5 5 0 0 0 0 7" />
+                    <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+                    <path d="M5.5 5.5a9 9 0 0 0 0 13" />
+                    <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+                </svg>
+                }
+
+                @case ('checkmark') {
+                <!-- Shield with checkmark — represents "votes cast / verified" -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2l7 4v6c0 4.418-3.134 8.223-7 9-3.866-.777-7-4.582-7-9V6z" />
+                    <polyline points="9 12 11 14 15 10" />
+                </svg>
+                }
+
+                @case ('calendar') {
+                <!-- Calendar — represents "upcoming" -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                }
+
+                }
+            </span>
+            <div class="stat-body">
+                <span class="stat-value">{{ stat.value }}</span>
+                <span class="stat-label">{{ stat.label }}</span>
+            </div>
+        </div>
+        }
+    </div>
+
+    <!-- Main Two-Column Section -->
+    <div class="main-grid">
+
+        <!-- Active Elections Panel -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Active Elections</h2>
+                <button class="btn-ghost">View All →</button>
+            </div>
+            <div class="election-list">
+                @for (election of elections; track election.title) {
+                <div class="election-item">
+                    <div class="election-meta">
+                        <!-- Pulsing dot retained via CSS; no emoji needed -->
+                        <span class="status-dot" [class.status-dot--live]="election.status === 'live'"
+                            [class.status-dot--soon]="election.status === 'soon'">
+                        </span>
+                        <span class="status-badge" [class.status-badge--live]="election.status === 'live'"
+                            [class.status-badge--soon]="election.status === 'soon'">
+                            {{ election.status === 'live' ? 'Live' : 'Soon' }}
+                        </span>
+                    </div>
+                    <div class="election-info">
+                        <span class="election-title">{{ election.title }}</span>
+                        <span class="election-date">{{ election.dateLabel }}</span>
+                    </div>
+                    <div class="election-votes">
+                        @if (election.status === 'live') {
+                        <span class="votes-count">{{ election.votes }} votes</span>
+                        } @else {
+                        <span class="votes-pending">—</span>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+        </section>
+
+        <!-- Recent Activity Panel -->
+        <section class="panel">
+            <div class="panel-header">
+                <h2 class="panel-title">Recent Activity</h2>
+            </div>
+            <div class="activity-list">
+                @for (activity of activities; track activity.time) {
+                <div class="activity-item activity-item--{{ activity.type }}">
+                    <span class="activity-icon">
+                        @switch (activity.icon) {
+
+                        @case ('ballot') {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                            <line x1="8" y1="12" x2="16" y2="12" />
+                            <line x1="8" y1="8" x2="16" y2="8" />
+                            <line x1="8" y1="16" x2="12" y2="16" />
+                        </svg>
+                        }
+
+                        @case ('live') {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="2" />
+                            <path d="M8.5 8.5a5 5 0 0 0 0 7" />
+                            <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+                        </svg>
+                        }
+
+                        @case ('ended') {
+                        <!-- Circle with X — represents "ended" -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="9" />
+                            <line x1="9" y1="9" x2="15" y2="15" />
+                            <line x1="15" y1="9" x2="9" y2="15" />
+                        </svg>
+                        }
+
+                        @case ('alert') {
+                        <!-- Triangle warning -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                            <line x1="12" y1="9" x2="12" y2="13" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                        </svg>
+                        }
+
+                        }
+                    </span>
+                    <div class="activity-body">
+                        <p class="activity-desc" [innerHTML]="activity.description"></p>
+                        <span class="activity-time">{{ activity.time }}</span>
+                    </div>
+                </div>
+                }
+            </div>
+        </section>
+
+    </div>
+</div>

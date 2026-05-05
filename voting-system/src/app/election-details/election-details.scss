@@ -1,0 +1,454 @@
+// ── Design tokens ───────────────────────────────────────────────
+:host {
+    --navy: #0f2144;
+    --blue: #1a56db;
+    --blue-light: #e8f0fe;
+    --accent: #3b82f6;
+    --white: #ffffff;
+    --surface: #f8faff;
+    --border: #dce6f7;
+    --text-body: #374151;
+    --text-muted: #6b7280;
+
+    display: block;
+    background: var(--surface);
+    min-height: 100vh;
+    font-family: 'Georgia', 'Times New Roman', serif; // Editorial/civic tone
+}
+
+// ── Loading / Error states ───────────────────────────────────────
+.state-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 1rem;
+    color: var(--text-muted);
+    font-family: system-ui, sans-serif;
+
+    &.error {
+        color: #dc2626;
+    }
+
+    p {
+        font-size: 1rem;
+        margin: 0;
+    }
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.state-icon {
+    font-size: 2rem;
+}
+
+// ── Page wrapper ─────────────────────────────────────────────────
+.page {
+    animation: fadeUp 0.4s ease both;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// ── Hero ─────────────────────────────────────────────────────────
+.hero {
+    background: linear-gradient(145deg, var(--navy) 0%, #1a3a6e 100%);
+    color: var(--white);
+    padding: 2.5rem 0 3rem;
+}
+
+.hero-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-family: system-ui, sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 1.5rem;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.18);
+    }
+}
+
+.hero-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+}
+
+// Status badges
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    &.badge--active {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    &.badge--ended {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    &.badge--pending {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+}
+
+// Animated green dot for active elections
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16a34a;
+    animation: pulse 1.6s ease infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.4);
+    }
+}
+
+.election-id {
+    font-family: system-ui, sans-serif;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.04em;
+}
+
+.hero-title {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.hero-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0 0 2rem;
+    max-width: 640px;
+    font-family: system-ui, sans-serif;
+    font-weight: 300;
+}
+
+// Date strip
+.date-strip {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    width: fit-content;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.date-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    &.highlight .date-value {
+        color: #93c5fd;
+        font-weight: 600;
+    }
+}
+
+.date-label {
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.date-value {
+    font-family: system-ui, sans-serif;
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+.date-divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.15);
+    align-self: center;
+}
+
+// Transaction hash row
+.tx-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+}
+
+.tx-label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.04em;
+}
+
+.tx-hash {
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    color: #93c5fd;
+    letter-spacing: 0.04em;
+}
+
+.copy-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.25rem 0.65rem;
+    border-radius: 5px;
+    font-size: 0.73rem;
+    font-family: system-ui, sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.18);
+    }
+
+    &.copied {
+        background: rgba(22, 163, 74, 0.3);
+        border-color: rgba(22, 163, 74, 0.4);
+        color: #86efac;
+    }
+}
+
+// ── Candidates Section ────────────────────────────────────────────
+.candidates-section {
+    padding: 3rem 0 2rem;
+}
+
+.section-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border);
+
+    h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--navy);
+        margin: 0;
+        letter-spacing: -0.01em;
+    }
+}
+
+.candidate-count {
+    font-family: system-ui, sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--blue-light);
+    color: var(--blue);
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.candidates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 1rem;
+}
+
+.candidate-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+    position: relative;
+    transition: box-shadow 0.2s, transform 0.2s;
+
+    &:hover {
+        box-shadow: 0 4px 20px rgba(26, 86, 219, 0.1);
+        transform: translateY(-2px);
+    }
+}
+
+.candidate-avatar {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--navy) 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: system-ui, sans-serif;
+}
+
+.candidate-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.candidate-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin: 0 0 0.2rem;
+    font-family: system-ui, sans-serif;
+}
+
+.candidate-party {
+    display: inline-block;
+    font-family: system-ui, sans-serif;
+    font-size: 0.73rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: var(--blue-light);
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    margin-bottom: 0.6rem;
+}
+
+.candidate-desc {
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.candidate-id {
+    font-family: 'Courier New', monospace;
+    font-size: 0.72rem;
+    color: var(--border);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+// ── Footer ────────────────────────────────────────────────────────
+.page-footer {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 3rem;
+    border-top: 1px solid var(--border);
+    font-family: system-ui, sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+// ── Responsive ────────────────────────────────────────────────────
+@media (max-width: 600px) {
+    .candidates-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .date-strip {
+        gap: 1rem;
+    }
+
+    .hero-inner,
+    .section-inner,
+    .page-footer {
+        padding: 0 1.25rem;
+    }
+}
+
+// ── Shared button ─────────────────────────────────────────────────
+.btn-secondary {
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--blue);
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-family: system-ui, sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background: var(--blue-light);
+    }
+}

@@ -1,0 +1,52 @@
+// voting-page.component.scss
+.voting-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem 2rem 0;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0.35;
+    transition: opacity 0.2s;
+
+    &.active {
+        opacity: 1;
+    }
+
+    &.done {
+        opacity: 0.7;
+    }
+
+    &.locked {
+        opacity: 0.25;
+        pointer-events: none;
+    }
+}
+
+.ps-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+}
+
+.ps-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #475569;
+}
+
+.progress-divider {
+    width: 2.5rem;
+    height: 1px;
+    background: #e2e8f0;
+}
