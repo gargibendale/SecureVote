@@ -92,6 +92,7 @@ async def verify_identity(
     dob: str = Form(...),
     aadhaar: str = Form(...),
     image: UploadFile = File(...),
+    current_user=Depends(get_current_user),
 ):
     logger.debug("[DEBUG] Verifying Aadhaar...")
 
@@ -154,6 +155,7 @@ async def collect_face_data(
     front: UploadFile = File(...),
     side_left: UploadFile = File(...),
     side_right: UploadFile = File(...),
+    current_user=Depends(get_current_user),
 ):
     db = get_db()
     users_collection = db["users"]
@@ -292,6 +294,7 @@ async def verify_face(
     front_image: UploadFile = File(...),
     side_left_image: UploadFile = File(...),
     side_right_image: UploadFile = File(...),
+    current_user=Depends(get_current_user),
 ):
     try:
         db = get_db()

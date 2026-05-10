@@ -193,6 +193,9 @@ async def cast_vote(
     db=Depends(get_db),
     contract: Contract = Depends(get_contract),
     w3: Web3 = Depends(get_w3),
+    current_user: User = Depends(
+        get_current_user
+    ),  # remove this dependency when running the cast_vote.py script to cast individual votes for testing purposes.
 ):
     pubkey_hash = payload["pubkey_hash"]
 
@@ -314,6 +317,7 @@ def get_results(
 def get_status(
     election_id: int,
     contract: Contract = Depends(get_contract),
+    current_user: User = Depends(get_current_user),
 ):
     # isElectionActive() returns True if exists AND not ended.
     is_active = contract.functions.isElectionActive(election_id).call()
@@ -326,6 +330,7 @@ def get_voter_status(
     election_id: int,
     voter_hash: str,  # hex string from the URL, e.g. "a3f2..."
     contract: Contract = Depends(get_contract),
+    current_user: User = Depends(get_current_user),
 ):
     # Convert the hex string back to the 32-byte value the contract expects —
     # same conversion we do in castVote.
@@ -342,7 +347,9 @@ def get_voter_status(
 
 @router.get("/elections")
 async def get_all_elections(
-    db=Depends(get_db), contract: Contract = Depends(get_contract)
+    db=Depends(get_db),
+    contract: Contract = Depends(get_contract),
+    current_user: User = Depends(get_current_user),
 ):
     elections = await db["elections"].find({}, {"_id": 0}).to_list(None)
 
