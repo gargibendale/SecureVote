@@ -1,5 +1,5 @@
 # SecureVote
-Link to full research paper: [SecureVote-IEEE-paper](https://drive.google.com/file/d/1Yzr7eWTyKe9wbXMbzPY64Fl0xNa-VYMz/view?usp=sharing)
+Link to full research paper: [SecureVote-IEEE-paper](https://drive.google.com/file/d/1M5NWiiqmoh36CzpskPf_NtWSqekEQ3Nu/view?usp=sharing)
 ## Overview
 This project is a secure and transparent voting system built using blockchain and biometric authentication. It aims to address some of the core issues in traditional and electronic voting systems, such as voter fraud, impersonation, lack of transparency, and low participation. The system combines Ethereum smart contracts with off-chain storage and AI-based face verification to create a practical and scalable voting solution.
 ## Why this project?
